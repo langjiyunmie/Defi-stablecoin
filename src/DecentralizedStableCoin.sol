@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
-import {ERC20Burnable, ERC20} from "lib/openzepplin-contracts/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import { Ownable } from "lib/openzepplin-contracts/contracts/access/Ownable.sol";
+import {ERC20Burnable, ERC20} from "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import { Ownable } from "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 
 // 在 OpenZeppelin 合约包的未来版本中，必须使用合约所有者的地址声明 Ownable
 // 作为参数。
 // 例如：
-// constructor（） ERC20（“去中心化稳定币”， “DSC”） ownable（0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266） {}
+// constructor（） ERC20（"去中心化稳定币"， "DSC"） ownable（0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266） {}
 contract DecentralizedStableCoin is ERC20Burnable, Ownable {
 
     error DecentralizedStableCoin__AmountMustBeGreaterThanZero();
@@ -17,7 +17,7 @@ contract DecentralizedStableCoin is ERC20Burnable, Ownable {
     event Burned(address indexed from, uint256 amount);
     event Minted(address indexed to, uint256 amount);
     
-    constructor() ERC20("DecentralizedStableCoin", "DSC") {}
+    constructor() ERC20("DecentralizedStableCoin", "DSC") Ownable(msg.sender) {}
 
     function burn(uint256 _amount) public override onlyOwner {
         uint256 balance = balanceOf(msg.sender);
