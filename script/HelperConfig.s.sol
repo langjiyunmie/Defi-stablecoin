@@ -8,11 +8,11 @@ import {MockV3Aggregator} from "../test/mocks/MockV3Aggregator.sol";
 contract HelperConfig is Script {
     uint8 public constant DECIMALS = 8;
     uint256 public constant wethPrice = 2000e8;
-    uint256 public constant wbtcPrice = 20000e8;
+    uint256 public constant wbtcPrice = 1000e8;
 
     uint256 public DEFAULT_ANVIL_PRIVATE_KEY = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
 
-    struct NetworkConfig{
+    struct NetworkConfig {
         address wethUsdPriceFeed;
         address wbtcUsdPriceFeed;
         address weth;
@@ -22,15 +22,15 @@ contract HelperConfig is Script {
 
     NetworkConfig public activeNetworkConfig;
 
-    constructor(){
-        if(block.chainid == 11155111){
+    constructor() {
+        if (block.chainid == 11155111) {
             activeNetworkConfig = getSepoliaEthConfig();
-        }else{
+        } else {
             activeNetworkConfig = getAnvilEthConfig();
         }
     }
 
-    function getSepoliaEthConfig() public view returns (NetworkConfig memory sepoliaConfig){
+    function getSepoliaEthConfig() public view returns (NetworkConfig memory sepoliaConfig) {
         sepoliaConfig = NetworkConfig({
             wethUsdPriceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306,
             wbtcUsdPriceFeed: 0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43,
@@ -40,8 +40,8 @@ contract HelperConfig is Script {
         });
     }
 
-    function getAnvilEthConfig() public returns (NetworkConfig memory anvilConfig){
-        if(activeNetworkConfig.wethUsdPriceFeed != address(0)){
+    function getAnvilEthConfig() public returns (NetworkConfig memory anvilConfig) {
+        if (activeNetworkConfig.wethUsdPriceFeed != address(0)) {
             return activeNetworkConfig;
         }
 
@@ -51,7 +51,7 @@ contract HelperConfig is Script {
         ERC20Mock wethMock = new ERC20Mock("Wrapped Ether", "WETH", msg.sender, 1000e8);
         ERC20Mock wbtcMock = new ERC20Mock("Wrapped Bitcoin", "WBTC", msg.sender, 1000e8);
         vm.stopBroadcast();
-        
+
         anvilConfig = NetworkConfig({
             wethUsdPriceFeed: address(wethUsdPriceFeed),
             wbtcUsdPriceFeed: address(wbtcUsdPriceFeed),

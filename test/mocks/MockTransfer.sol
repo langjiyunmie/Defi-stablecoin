@@ -8,7 +8,7 @@ import {Ownable} from "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 // 作为参数。
 // 例如：
 // constructor（） ERC20（"去中心化稳定币"， "DSC"） ownable（0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266） {}
-contract DecentralizedStableCoin is ERC20Burnable, Ownable {
+contract MockTransferFailed is ERC20Burnable, Ownable {
     error DecentralizedStableCoin__AmountMustBeGreaterThanZero();
     error DecentralizedStableCoin__BurnAmountExceedsBalance();
     error DecentralizedStableCoin__CannotMintToZeroAddress();
@@ -46,5 +46,9 @@ contract DecentralizedStableCoin is ERC20Burnable, Ownable {
 
         emit Minted(_to, _amount);
         return true;
+    }
+
+    function transfer(address to, uint256 amount) public override returns (bool) {
+        return false;
     }
 }
